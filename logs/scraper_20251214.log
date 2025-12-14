@@ -1,0 +1,108 @@
+2025-12-14 14:40:15,084 - INFO - === Emlakjet Scraper Starting ===
+2025-12-14 14:40:15,084 - INFO - Configuration: pages=30, headless=False, sample_mode=False, resume=False
+2025-12-14 14:40:15,084 - INFO - Processing page 1/30
+2025-12-14 14:40:22,809 - INFO - WebDriver initialized successfully
+2025-12-14 14:40:22,826 - INFO - Scraping page 1: https://www.emlakjet.com/kiralik-daire/istanbul/1
+2025-12-14 14:40:29,449 - ERROR - CAPTCHA detected in page
+2025-12-14 14:41:09,639 - INFO - CAPTCHA solved, continuing...
+2025-12-14 14:43:53,380 - INFO - Extracted 30 valid listings from page 1
+2025-12-14 14:43:53,386 - INFO - Total listings so far: 30
+2025-12-14 14:43:55,620 - INFO - Processing page 2/30
+2025-12-14 14:43:58,134 - INFO - WebDriver initialized successfully
+2025-12-14 14:43:58,148 - INFO - Scraping page 2: https://www.emlakjet.com/kiralik-daire/istanbul/2
+2025-12-14 14:44:07,355 - ERROR - CAPTCHA detected in page
+2025-12-14 14:46:01,367 - INFO - CAPTCHA solved, continuing...
+2025-12-14 14:48:44,271 - INFO - Extracted 30 valid listings from page 2
+2025-12-14 14:48:44,271 - INFO - Total listings so far: 60
+2025-12-14 14:48:46,534 - INFO - Processing page 3/30
+2025-12-14 14:48:50,227 - INFO - WebDriver initialized successfully
+2025-12-14 14:48:50,244 - INFO - Scraping page 3: https://www.emlakjet.com/kiralik-daire/istanbul/3
+2025-12-14 14:48:59,951 - ERROR - CAPTCHA detected in page
+2025-12-14 14:49:06,590 - INFO - CAPTCHA solved, continuing...
+2025-12-14 14:51:51,077 - INFO - Extracted 30 valid listings from page 3
+2025-12-14 14:51:51,078 - INFO - Total listings so far: 90
+2025-12-14 14:51:53,375 - INFO - Processing page 4/30
+2025-12-14 14:51:55,824 - INFO - WebDriver initialized successfully
+2025-12-14 14:51:55,835 - INFO - Scraping page 4: https://www.emlakjet.com/kiralik-daire/istanbul/4
+2025-12-14 14:52:04,343 - ERROR - CAPTCHA detected in page
+2025-12-14 14:52:51,295 - INFO - CAPTCHA solved, continuing...
+2025-12-14 14:55:33,744 - INFO - Extracted 30 valid listings from page 4
+2025-12-14 14:55:33,745 - INFO - Total listings so far: 120
+2025-12-14 14:55:36,049 - INFO - Processing page 5/30
+2025-12-14 14:55:38,437 - INFO - WebDriver initialized successfully
+2025-12-14 14:55:38,451 - INFO - Scraping page 5: https://www.emlakjet.com/kiralik-daire/istanbul/5
+2025-12-14 14:55:48,884 - ERROR - CAPTCHA detected in page
+2025-12-14 14:56:40,096 - INFO - CAPTCHA solved, continuing...
+2025-12-14 14:59:22,505 - INFO - Extracted 30 valid listings from page 5
+2025-12-14 14:59:22,516 - INFO - Total listings so far: 150
+2025-12-14 14:59:22,522 - INFO - Checkpoint saved at page 5
+2025-12-14 14:59:24,756 - INFO - Processing page 6/30
+2025-12-14 14:59:27,184 - INFO - WebDriver initialized successfully
+2025-12-14 14:59:30,877 - INFO - Scraping page 6: https://www.emlakjet.com/kiralik-daire/istanbul/6
+2025-12-14 14:59:38,286 - ERROR - CAPTCHA detected in page
+2025-12-14 15:01:03,952 - INFO - CAPTCHA solved, continuing...
+2025-12-14 15:01:03,955 - WARNING - Error on page 6: InvalidSessionIdException. Retry 1/3
+2025-12-14 15:01:07,580 - WARNING - Error on page 6: InvalidSessionIdException. Retry 2/3
+2025-12-14 15:01:11,188 - WARNING - Error on page 6: InvalidSessionIdException. Retry 3/3
+2025-12-14 15:01:11,188 - ERROR - Failed to scrape page 6 after 3 retries
+2025-12-14 15:01:13,194 - INFO - Processing page 7/30
+2025-12-14 15:01:15,644 - INFO - WebDriver initialized successfully
+2025-12-14 15:01:19,468 - INFO - Scraping page 7: https://www.emlakjet.com/kiralik-daire/istanbul/7
+2025-12-14 15:01:26,075 - ERROR - CAPTCHA detected in page
+2025-12-14 15:02:30,048 - INFO - CAPTCHA solved, continuing...
+2025-12-14 15:05:10,662 - INFO - Extracted 30 valid listings from page 7
+2025-12-14 15:05:10,663 - INFO - Total listings so far: 180
+2025-12-14 15:05:13,043 - INFO - Processing page 8/30
+2025-12-14 15:05:15,451 - INFO - WebDriver initialized successfully
+2025-12-14 15:05:19,160 - INFO - Scraping page 8: https://www.emlakjet.com/kiralik-daire/istanbul/8
+2025-12-14 15:05:26,186 - ERROR - CAPTCHA detected in page
+2025-12-14 15:05:58,290 - INFO - CAPTCHA solved, continuing...
+2025-12-14 15:08:38,802 - INFO - Extracted 30 valid listings from page 8
+2025-12-14 15:08:38,802 - INFO - Total listings so far: 210
+2025-12-14 15:08:41,001 - INFO - Processing page 9/30
+2025-12-14 15:08:43,406 - INFO - WebDriver initialized successfully
+2025-12-14 15:08:47,372 - INFO - Scraping page 9: https://www.emlakjet.com/kiralik-daire/istanbul/9
+2025-12-14 15:08:55,487 - ERROR - CAPTCHA detected in page
+2025-12-14 15:09:10,301 - INFO - CAPTCHA solved, continuing...
+2025-12-14 15:09:10,304 - WARNING - Error on page 9: InvalidSessionIdException. Retry 1/3
+2025-12-14 15:09:13,150 - WARNING - Error on page 9: InvalidSessionIdException. Retry 2/3
+2025-12-14 15:09:15,195 - WARNING - Error on page 9: InvalidSessionIdException. Retry 3/3
+2025-12-14 15:09:15,196 - ERROR - Failed to scrape page 9 after 3 retries
+2025-12-14 15:09:17,202 - INFO - Processing page 10/30
+2025-12-14 15:09:19,611 - INFO - WebDriver initialized successfully
+2025-12-14 15:09:23,328 - INFO - Scraping page 10: https://www.emlakjet.com/kiralik-daire/istanbul/10
+2025-12-14 15:09:31,881 - ERROR - CAPTCHA detected in page
+2025-12-14 15:10:05,951 - INFO - CAPTCHA solved, continuing...
+2025-12-14 15:12:48,428 - INFO - Extracted 30 valid listings from page 10
+2025-12-14 15:12:48,439 - INFO - Total listings so far: 240
+2025-12-14 15:12:48,441 - INFO - Checkpoint saved at page 10
+2025-12-14 15:12:50,728 - INFO - Processing page 11/30
+2025-12-14 15:12:53,121 - INFO - WebDriver initialized successfully
+2025-12-14 15:12:57,101 - INFO - Scraping page 11: https://www.emlakjet.com/kiralik-daire/istanbul/11
+2025-12-14 15:13:06,210 - ERROR - CAPTCHA detected in page
+2025-12-14 15:13:50,132 - INFO - CAPTCHA solved, continuing...
+2025-12-14 15:14:57,441 - WARNING - Error on page 11: NoSuchWindowException. Retry 1/3
+2025-12-14 15:15:00,836 - WARNING - Error on page 11: NoSuchWindowException. Retry 2/3
+2025-12-14 15:15:04,637 - WARNING - Error on page 11: NoSuchWindowException. Retry 3/3
+2025-12-14 15:15:04,637 - ERROR - Failed to scrape page 11 after 3 retries
+2025-12-14 15:15:06,770 - INFO - Processing page 12/30
+2025-12-14 15:15:09,170 - INFO - WebDriver initialized successfully
+2025-12-14 15:15:12,779 - INFO - Scraping page 12: https://www.emlakjet.com/kiralik-daire/istanbul/12
+2025-12-14 15:15:20,362 - ERROR - CAPTCHA detected in page
+2025-12-14 15:15:31,400 - INFO - CAPTCHA solved, continuing...
+2025-12-14 15:18:13,348 - INFO - Extracted 30 valid listings from page 12
+2025-12-14 15:18:13,348 - INFO - Total listings so far: 270
+2025-12-14 15:18:15,576 - INFO - Processing page 13/30
+2025-12-14 15:18:19,155 - INFO - WebDriver initialized successfully
+2025-12-14 15:18:23,085 - INFO - Scraping page 13: https://www.emlakjet.com/kiralik-daire/istanbul/13
+2025-12-14 15:18:29,970 - ERROR - CAPTCHA detected in page
+2025-12-14 15:26:56,589 - INFO - CAPTCHA solved, continuing...
+2025-12-14 15:26:56,593 - WARNING - Error on page 13: InvalidSessionIdException. Retry 1/3
+2025-12-14 15:26:58,701 - WARNING - Error on page 13: InvalidSessionIdException. Retry 2/3
+2025-12-14 15:27:02,220 - WARNING - Error on page 13: InvalidSessionIdException. Retry 3/3
+2025-12-14 15:27:02,220 - ERROR - Failed to scrape page 13 after 3 retries
+2025-12-14 15:27:04,226 - INFO - Processing page 14/30
+2025-12-14 15:27:06,606 - INFO - WebDriver initialized successfully
+2025-12-14 15:27:10,273 - INFO - Scraping page 14: https://www.emlakjet.com/kiralik-daire/istanbul/14
+2025-12-14 15:27:17,992 - ERROR - CAPTCHA detected in page
+2025-12-14 15:41:34,141 - INFO - CAPTCHA solved, continuing...
