@@ -65,6 +65,41 @@ def clean_price(text: Optional[str]) -> Optional[float]:
         return None
 
 
+def extract_property_details(text: str) -> Dict[str, Optional[str]]:
+    """Extract room count, floor, and area from property details text."""
+    details = {
+        "Oda_Sayisi": None,
+        "Kat": None,
+        "Brut_Alan_m2": None
+    }
+    
+    if not text:
+        return details
+    
+    text_lower = text.lower()
+    
+    # Extract room count (e.g., "3+1", "2+1", "1+0")
+    room_match = re.search(r"(\d+)\s*\+\s*(\d+)", text_lower)
+    if room_match:
+        details["Oda_Sayisi"] = f"{room_match.group(1)}+{room_match.group(2)}"
+    
+    # Extract area (e.g., "120 m²", "85m2", "150 m2")
+    area_match = re.search(r"(\d{2,4})\s*m[²2]", text_lower)
+    if area_match:
+        details["Brut_Alan_m2"] = area_match.group(1)
+    
+    # Extract floor (e.g., "5. Kat", "Zemin Kat", "3.Kat")
+    floor_match = re.search(r"(\d+)\s*\.?\s*kat", text_lower)
+    if floor_match:
+        details["Kat"] = floor_match.group(1)
+    elif any(word in text_lower for word in ["zemin", "giriş"]):
+        details["Kat"] = "Zemin"
+    elif "çatı" in text_lower or "tavan" in text_lower:
+        details["Kat"] = "Çatı"
+    
+    return details
+
+
 @contextmanager
 def get_driver(headless: bool = True):
     """Create and manage Chrome WebDriver."""
@@ -278,14 +313,42 @@ class EmlakjetScraper:
                         except:
                             continue
                     
-                    # Try to find details
-                    details = ""
+                    # Try to find details (room, floor, area)
+                    details_text = ""
                     try:
-                        details_el = card.find_element(By.TAG_NAME, "ul")
-                        if details_el:
-                            details = details_el.text.strip()
+                        # Try to find details container
+                        details_selectors = [
+                            "[data-testid='property-features']",
+                            "ul",
+                            "[class*='features']",
+                            "[class*='details']",
+                        ]
+                        
+                        for sel in details_selectors:
+                            try:
+                                details_el = card.find_element(By.CSS_SELECTOR, sel)
+                                if details_el and details_el.text.strip():
+                                    # Try to get individual list items
+                                    try:
+                                        items = details_el.find_elements(By.TAG_NAME, "li")
+                                        if items:
+                                            details_text = " | ".join([item.text.strip() for item in items if item.text.strip()])
+                                        else:
+                                            details_text = details_el.text.strip()
+                                    except:
+                                        details_text = details_el.text.strip()
+                                    break
+                            except:
+                                continue
+                        
+                        # If no details found in ul/li, try to get all text from card
+                        if not details_text:
+                            details_text = card.text
                     except:
-                        pass
+                        details_text = ""
+                    
+                    # Extract structured details from text
+                    property_details = extract_property_details(details_text)
                     
                     # Try to find URL
                     url_link = ""
@@ -295,12 +358,28 @@ class EmlakjetScraper:
                     except:
                         pass
                     
+                    # Split location into district and neighborhood
+                    semt = ""
+                    mahalle = ""
+                    if location:
+                        parts = [p.strip() for p in location.split(",")]
+                        if len(parts) >= 2:
+                            semt = parts[0]
+                            mahalle = parts[1]
+                        elif len(parts) == 1:
+                            semt = parts[0]
+                    
                     data = {
                         "Tarih": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         "Fiyat": price_text,
                         "Fiyat_Sayisal": clean_price(price_text),
                         "Konum": location,
-                        "Detaylar": details,
+                        "Semt": semt,
+                        "Mahalle": mahalle,
+                        "Oda_Sayisi": property_details["Oda_Sayisi"],
+                        "Kat": property_details["Kat"],
+                        "Brut_Alan_m2": property_details["Brut_Alan_m2"],
+                        "Detaylar": details_text,
                         "URL": url_link,
                     }
                     
@@ -351,8 +430,30 @@ class EmlakjetScraper:
         if self.data:
             df = pd.DataFrame(self.data)
             
+            # Convert Brut_Alan_m2 to numeric
+            df["Brut_Alan_m2_Numeric"] = pd.to_numeric(df["Brut_Alan_m2"], errors="coerce")
+            
+            # Calculate price per m2
+            df["Fiyat_Per_m2"] = df.apply(
+                lambda row: round(row["Fiyat_Sayisal"] / row["Brut_Alan_m2_Numeric"], 2)
+                if pd.notna(row["Fiyat_Sayisal"]) and pd.notna(row["Brut_Alan_m2_Numeric"]) and row["Brut_Alan_m2_Numeric"] > 0
+                else None,
+                axis=1
+            )
+            
             # Drop duplicates
-            df = df.drop_duplicates(subset=["Fiyat", "Konum"], keep="first")
+            df = df.drop_duplicates(subset=["Fiyat", "Konum", "Oda_Sayisi"], keep="first")
+            
+            # Reorder columns for better readability
+            column_order = [
+                "Tarih", "Fiyat", "Fiyat_Sayisal", "Fiyat_Per_m2",
+                "Semt", "Mahalle", "Konum",
+                "Oda_Sayisi", "Brut_Alan_m2", "Brut_Alan_m2_Numeric", "Kat",
+                "Detaylar", "URL"
+            ]
+            existing_cols = [col for col in column_order if col in df.columns]
+            other_cols = [col for col in df.columns if col not in column_order]
+            df = df[existing_cols + other_cols]
             
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"emlakjet_{timestamp}.csv"
@@ -362,12 +463,40 @@ class EmlakjetScraper:
             print("✅ SCRAPING COMPLETE", flush=True)
             print("="*60, flush=True)
             print(f"📊 Total listings: {len(df)}", flush=True)
+            print(f"🏠 Unique listings: {df.drop_duplicates(subset=['URL']).shape[0] if 'URL' in df.columns else 'N/A'}", flush=True)
             
             if "Fiyat_Sayisal" in df.columns:
                 valid_prices = df["Fiyat_Sayisal"].dropna()
                 if len(valid_prices) > 0:
                     print(f"💰 Price range: {valid_prices.min():,.0f} - {valid_prices.max():,.0f} TL", flush=True)
                     print(f"💰 Average: {valid_prices.mean():,.0f} TL", flush=True)
+                    print(f"💰 Median: {valid_prices.median():,.0f} TL", flush=True)
+            
+            if "Brut_Alan_m2_Numeric" in df.columns:
+                valid_area = df["Brut_Alan_m2_Numeric"].dropna()
+                if len(valid_area) > 0:
+                    print(f"📐 Area range: {valid_area.min():.0f} - {valid_area.max():.0f} m²", flush=True)
+                    print(f"📐 Average area: {valid_area.mean():.0f} m²", flush=True)
+            
+            if "Fiyat_Per_m2" in df.columns:
+                valid_per_m2 = df["Fiyat_Per_m2"].dropna()
+                if len(valid_per_m2) > 0:
+                    print(f"💵 Average price/m²: {valid_per_m2.mean():,.0f} TL/m²", flush=True)
+            
+            if "Oda_Sayisi" in df.columns:
+                room_counts = df["Oda_Sayisi"].value_counts().head(5)
+                if len(room_counts) > 0:
+                    print(f"🚪 Room distribution: {', '.join([f'{k}: {v}' for k, v in room_counts.items()])}", flush=True)
+            
+            if "Kat" in df.columns:
+                floor_counts = df["Kat"].value_counts().head(5)
+                if len(floor_counts) > 0:
+                    print(f"🏢 Floor distribution: {', '.join([f'{k}: {v}' for k, v in floor_counts.items()])}", flush=True)
+            
+            if "Semt" in df.columns:
+                district_counts = df["Semt"].value_counts().head(5)
+                if len(district_counts) > 0:
+                    print(f"📍 Top districts: {', '.join([f'{k} ({v})' for k, v in district_counts.items()])}", flush=True)
             
             print(f"💾 Saved to: {filename}", flush=True)
             print("="*60 + "\n", flush=True)
